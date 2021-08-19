@@ -1593,12 +1593,12 @@ makeTransactionBody =
 
 
 pattern TxBody :: TxBodyContent ViewTx era -> TxBody era
-pattern TxBody txbodycontent <- (getTxBodyContent TxScriptValidityNone -> txbodycontent)
+pattern TxBody txbodycontent <- (getTxBodyContent -> txbodycontent)
 {-# COMPLETE TxBody #-}
 
-getTxBodyContent :: TxScriptValidity era -> TxBody era -> TxBodyContent ViewTx era
-getTxBodyContent _ (ByronTxBody body) = getByronTxBodyContent body
-getTxBodyContent scriptValidity (ShelleyTxBody era body _scripts _redeemers mAux _scriptValidity) =
+getTxBodyContent :: TxBody era -> TxBodyContent ViewTx era
+getTxBodyContent (ByronTxBody body) = getByronTxBodyContent body
+getTxBodyContent (ShelleyTxBody era body _scripts _redeemers mAux scriptValidity) =
     fromLedgerTxBody era scriptValidity body mAux
 
 
