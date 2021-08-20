@@ -61,7 +61,9 @@ import qualified Data.Aeson as Aeson
 import           Data.Aeson.Types (Parser, toJSONKeyText)
 import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
+import qualified Data.ByteString.Base16 as Base16
 import qualified Data.ByteString.Char8 as BSC
+import           Data.Either 
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Map.Merge.Strict as Map
 import           Data.Map.Strict (Map)
@@ -408,4 +410,5 @@ renderAssetId :: AssetId -> Text
 renderAssetId AdaAssetId = "lovelace"
 renderAssetId (AssetId polId (AssetName assetName))
   | BS.null assetName = renderPolicyId polId
-  | otherwise         = renderPolicyId polId <> "." <> Text.decodeUtf8 assetName
+  | otherwise         = renderPolicyId polId <> "." <> 
+    fromRight ("{" <> Text.decodeUtf8 (Base16.encode assetName) <> "}") (Text.decodeUtf8' assetName)
