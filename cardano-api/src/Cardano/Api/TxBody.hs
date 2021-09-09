@@ -2365,7 +2365,7 @@ makeShelleyTransactionBody era@ShelleyBasedEraAlonzo
     witnesses = collectTxBodyScriptWitnesses txbodycontent
 
     scripts :: [Ledger.Script StandardAlonzo]
-    scripts =
+    scripts = nub
       [ toShelleyScript (scriptWitnessScript scriptwitness)
       | (_, AnyScriptWitness scriptwitness) <- witnesses
       ]
